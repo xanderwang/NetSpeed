@@ -1,14 +1,14 @@
 package com.xandy.netspeed;
 
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Rect;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +17,8 @@ public class OverFlow {
     WindowManager.LayoutParams mWManParams;
     
     public View mOverFlowView;
+    
+    private float mStateBarHeight = 20;
     
     //初始位置
     private float startX;
@@ -30,35 +32,37 @@ public class OverFlow {
     private float mTouchStartY;
     
     //组件
-    public ImageView mIcon,mClose;
+    public ImageView mIcon;
     public TextView mShow;
     
     Context mContext;
     
     public OverFlow(Context context) {
-        //super(context);
         this.mContext = context;
+        
     }
     /**
      * 初始化mWManger,mWManParams
      */
     public void show(){
         mWManger = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        
+        mWManger.getDefaultDisplay().getHeight();
         mWManParams = new WindowManager.LayoutParams();
         
         //设置LayoutParams的参数
-        mWManParams.type = 2002;//设置系统级窗口
-        mWManParams.flags |= 8;
+        mWManParams.type = LayoutParams.TYPE_PHONE; //设置系统级窗口
+        mWManParams.flags |= LayoutParams.FLAG_NOT_FOCUSABLE;
         //调整悬浮窗到左上角
-        mWManParams.gravity = Gravity.TOP|Gravity.LEFT;
+        mWManParams.gravity = Gravity.TOP | Gravity.LEFT;
         
         //以屏幕左上角为源点，设置x，y
         mWManParams.x = 0;
         mWManParams.y = 0;
         
         //悬浮窗的长宽数据
-        mWManParams.width = 80;
-        mWManParams.height = 40;
+        mWManParams.width = LayoutParams.WRAP_CONTENT;
+        mWManParams.height = LayoutParams.WRAP_CONTENT;
         mWManParams.format = -3;//透明
         
         //加载悬浮窗布局文件
@@ -86,32 +90,14 @@ public class OverFlow {
                 case MotionEvent.ACTION_MOVE:
                     updatePosition();
                     break;
-                    
                 case MotionEvent.ACTION_UP:
                     updatePosition();
-                    showCloseView();
                     mTouchSatrtX = mTouchStartY = 0;
                     break;
                 }
                 return true;
             }
         });
-        
-        mClose = (ImageView) mOverFlowView.findViewById(R.id.img_close);
-        /**
-         * 关闭悬浮窗图标点击事件
-         */
-        /*
-        mClose.setOnClickListener(new OnClickListener() {
-            
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(mContext,NetService.class);
-                mContext.stopService(intent);
-                mOverFlowView.setVisibility(View.GONE);
-            }
-        });
-        */
         mShow = (TextView) mOverFlowView.findViewById(R.id.tv_show);
     }
     
@@ -119,20 +105,8 @@ public class OverFlow {
      * 更新悬浮窗的位置
      */
     public void updatePosition(){
-        mWManParams.x = (int) (x - mTouchSatrtX);
-        mWManParams.y = (int) (y - mTouchStartY);
+        mWManParams.x = (int) ( x - mTouchSatrtX );
+        mWManParams.y = 0;// (int) ( y );
         mWManger.updateViewLayout(mOverFlowView, mWManParams);
-    }
-    
-    /**
-     * 控制关闭悬浮窗按钮的显示与隐藏
-     */
-    public void showCloseView() {
-        if (Math.abs(x - startX) < 1.5 && Math.abs(y - startY) < 1.5
-                && !mClose.isShown()) {
-            mClose.setVisibility(View.VISIBLE);
-        } else if (mClose.isShown()) {
-            mClose.setVisibility(View.GONE);
-        }
     }
 }
