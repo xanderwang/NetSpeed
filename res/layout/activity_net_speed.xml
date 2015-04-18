@@ -1,0 +1,78 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.xandy.netspeed.NetSpeed" >
+
+    <RelativeLayout 
+        android:id="@+id/row_auto_on" 
+        android:layout_width="match_parent" 
+        android:layout_height="@dimen/row_height" >
+        <TextView 
+            android:id="@+id/text_auto_on" 
+            android:layout_width="wrap_content" 
+            android:layout_height="match_parent" 
+            android:gravity="center_vertical" 
+            android:layout_alignParentLeft="true"
+            android:text="Auto ON" />
+        <Switch 
+            android:id="@+id/switch_auto_on" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <View 
+        android:layout_width="match_parent" 
+        android:layout_height="1px" 
+        android:background="#000000" />
+    
+    <RelativeLayout 
+        android:id="@+id/row_look_time" 
+        android:layout_width="match_parent" 
+        android:layout_height="@dimen/row_height" >
+        <TextView 
+            android:id="@+id/text_look_time" 
+            android:layout_width="wrap_content" 
+            android:layout_height="match_parent" 
+            android:gravity="center_vertical" 
+            android:layout_alignParentLeft="true"
+            android:text="Auto ON" />
+        <Switch 
+            android:id="@+id/switch_look_time" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+    <View 
+        android:layout_width="match_parent" 
+        android:layout_height="1px" 
+        android:background="#000000" />
+    
+    
+    <RelativeLayout 
+        android:id="@+id/row_theme" 
+        android:layout_width="match_parent" 
+        android:layout_height="@dimen/row_height" >
+        <TextView 
+            android:id="@+id/text_theme" 
+            android:layout_width="wrap_content" 
+            android:layout_height="match_parent" 
+            android:gravity="center_vertical" 
+            android:layout_alignParentLeft="true"
+            android:text="Auto ON" />
+        <Switch 
+            android:id="@+id/switch_theme" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+</LinearLayout>
