@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -20,18 +19,18 @@ public class NetService extends Service {
     private OverFlow mOverFlow;
     private static final int UPDATE_NET_DATA = 0;
     
-    private static final int CHECK_MOST   = 1;
-    private static final int CHECK_NORMAL = 3;
-    private static final int CHECK_LOW    = 5;
+    private static final float CHECK_MOST   = .5f;
+    private static final float CHECK_NORMAL = 1.f;
+    private static final float CHECK_LOW    = 1.5f;
     
-    private int mCheck = CHECK_NORMAL;
+    private float mCheck = CHECK_NORMAL;
     
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if ( UPDATE_NET_DATA == msg.what ) {
-            	float speed = msg.arg1;
+            	float speed = ((long) msg.obj ) * 1.f;
             	String speedFmt = "";
             	if( speed < 1024 * mCheck ) {
             		speedFmt = String.format("%.2f B/S", speed / mCheck ) ;
@@ -75,17 +74,13 @@ public class NetService extends Service {
         public void run() {
             Log.d(TAG, "mRunnable run");
             refreshNet();
-            mHandler.postDelayed(mRunnable, mCheck * 1000);
+            mHandler.postDelayed(mRunnable, (long)(mCheck * 1000));
         }
     };
 
-    /**
-     * 启动服务时就开始启动线程获取网速
-     */
     @Override
     public void onStart(Intent intent, int startId) {
         Log.d(TAG, "onStart");
-        mHandler.postDelayed(mRunnable, 0);
     };
 
     /**
@@ -106,18 +101,19 @@ public class NetService extends Service {
 
     @Override
     public void onCreate() {
+    	Log.d(TAG, "onCreate");
         super.onCreate();
-        Rect frame = new Rect();
-        //getDecorView().getWindowVisibleDisplayFrame(frame);
-        Log.d(TAG, "onCreate");
         mOverFlow = new OverFlow(this);
         mOverFlow.show();
+        readNetFile();
+        refreshData();
+        mHandler.postDelayed(mRunnable, 0);
     }
 
     /**
      * 读取系统流量文件
      */
-    public void readNetFile() {
+    public synchronized void readNetFile() {
         Log.d(TAG, "readNetFile");
         FileReader netFile = null;
         try {
@@ -173,47 +169,49 @@ public class NetService extends Service {
     /**
      * 实时读取系统流量文件，更新
      */
-    public void refreshNet() {
+    private void refreshNet() {
         Log.d(TAG, "refreshNet");
         // 读取系统流量文件
         readNetFile();
         // 计算增量
-        int[] delta = new int[12];
-        delta[0] = Integer.parseInt(ethData[0]) - Integer.parseInt(data[0]);
-        delta[1] = Integer.parseInt(ethData[1]) - Integer.parseInt(data[1]);
-        delta[2] = Integer.parseInt(ethData[8]) - Integer.parseInt(data[2]);
-        delta[3] = Integer.parseInt(ethData[9]) - Integer.parseInt(data[3]);
+        long[] delta = new long[12];
+        delta[0]  = Long.parseLong(ethData[0]) - Long.parseLong(data[0]);
+        delta[1]  = Long.parseLong(ethData[1]) - Long.parseLong(data[1]);
+        delta[2]  = Long.parseLong(ethData[8]) - Long.parseLong(data[2]);
+        delta[3]  = Long.parseLong(ethData[9]) - Long.parseLong(data[3]);
         
-        delta[4] = Integer.parseInt(gprsData[0]) - Integer.parseInt(data[4]);
-        delta[5] = Integer.parseInt(gprsData[1]) - Integer.parseInt(data[5]);
-        delta[6] = Integer.parseInt(gprsData[8]) - Integer.parseInt(data[6]);
-        delta[7] = Integer.parseInt(gprsData[9]) - Integer.parseInt(data[7]);
+        delta[4]  = Long.parseLong(gprsData[0]) - Long.parseLong(data[4]);
+        delta[5]  = Long.parseLong(gprsData[1]) - Long.parseLong(data[5]);
+        delta[6]  = Long.parseLong(gprsData[8]) - Long.parseLong(data[6]);
+        delta[7]  = Long.parseLong(gprsData[9]) - Long.parseLong(data[7]);
         
-        delta[8] = Integer.parseInt(wifiData[0]) - Integer.parseInt(data[8]);
-        delta[9] = Integer.parseInt(wifiData[1]) - Integer.parseInt(data[9]);
-        delta[10] = Integer.parseInt(wifiData[8]) - Integer.parseInt(data[10]);
-        delta[11] = Integer.parseInt(wifiData[9]) - Integer.parseInt(data[11]);
+        delta[8]  = Long.parseLong(wifiData[0]) - Long.parseLong(data[8]);
+        delta[9]  = Long.parseLong(wifiData[1]) - Long.parseLong(data[9]);
+        delta[10] = Long.parseLong(wifiData[8]) - Long.parseLong(data[10]);
+        delta[11] = Long.parseLong(wifiData[9]) - Long.parseLong(data[11]);
+        
+        refreshData();
 
-        data[0] = ethData[0];
+        // 每秒下载的字节数
+        long netData = delta[0] + delta[4] + delta[8];
+        Message msg = mHandler.obtainMessage();
+        msg.what = UPDATE_NET_DATA;
+        msg.obj = netData;
+        mHandler.sendMessage(msg);
+    }
+    
+    private void refreshData() {
+    	data[0] = ethData[0];
         data[1] = ethData[1];
         data[2] = ethData[8];
         data[3] = ethData[9];
-        
         data[4] = gprsData[0];
         data[5] = gprsData[1];
         data[6] = gprsData[8];
         data[7] = gprsData[9];
-        
         data[8] = wifiData[0];
         data[9] = wifiData[1];
         data[10] = wifiData[8];
         data[11] = wifiData[9];
-
-        // 每秒下载的字节数
-        int netData = delta[0] + delta[4] + delta[8];
-        Message msg = mHandler.obtainMessage();
-        msg.what = UPDATE_NET_DATA;
-        msg.arg1 = netData;
-        mHandler.sendMessage(msg);
     }
 }
