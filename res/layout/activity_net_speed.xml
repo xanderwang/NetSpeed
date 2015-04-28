@@ -43,7 +43,7 @@
             android:layout_height="match_parent" 
             android:gravity="center_vertical" 
             android:layout_alignParentLeft="true"
-            android:text="Check Time" />
+            android:text="Frequency" />
         
         <TextView 
             android:id="@+id/text_check_value" 
@@ -61,16 +61,16 @@
     
     
     <RelativeLayout 
-        android:id="@+id/row_theme" 
+        android:id="@+id/row_style" 
         android:layout_width="match_parent" 
         android:layout_height="@dimen/row_height" >
         <TextView 
-            android:id="@+id/text_theme" 
+            android:id="@+id/text_style" 
             android:layout_width="wrap_content" 
             android:layout_height="match_parent" 
             android:gravity="center_vertical" 
             android:layout_alignParentLeft="true"
-            android:text="Theme" />
+            android:text="Style" />
         <TextView 
             android:id="@+id/text_theme_value" 
             android:layout_width="wrap_content" 

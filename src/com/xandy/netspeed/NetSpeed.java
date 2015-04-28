@@ -1,37 +1,32 @@
 package com.xandy.netspeed;
 
+import android.R.menu;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.CheckBox;
 
-public class NetSpeed extends Activity {
+public class NetSpeed extends Activity implements OnClickListener {
     
     private static final String TAG = "NetSpeed";
-    
-    private static final String KEY_AUTO_START = "auto_start";
-    
     private boolean flag;  
+    
+    private View mRowAutoOn;
+    private CheckBox mAutoOn;
+    private View mRowFrequency;
+    private View mRowStyle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_net_speed);
-        //bindService();
         startService(this);
-    }
-    
-    @Override
-    protected void onDestroy() {
-        unBindService();
-        super.onDestroy();
     }
     
     private void startService( Context context ) {
@@ -40,46 +35,27 @@ public class NetSpeed extends Activity {
         startService(intent);
     }
     
-    private void bindService() {  
-        Log.d(TAG, "bindService");
-        Intent intent = new Intent(NetSpeed.this,NetService.class);  
-        bindService(intent, conn, Context.BIND_AUTO_CREATE);  
-    }  
-      
-    private void unBindService(){  
-        Log.i(TAG, "unBindService() start....");  
-        if(flag == true){  
-            Log.i(TAG, "unBindService() flag");  
-            unbindService(conn);  
-            flag = false;  
-        }  
-    }  
+    @Override
+    public void onClick(View v) {
+    	if( mRowAutoOn == v ) {
+    		
+    	} else if( true ) {
+    		
+    	}
+    }
     
-    private ServiceConnection conn = new ServiceConnection() {  
-        
-        @Override  
-        public void onServiceDisconnected(ComponentName name) {   
-            Log.d(TAG, "onServiceDisconnected()");  
-        }  
-          
-        @Override  
-        public void onServiceConnected(ComponentName name, IBinder service) {   
-            Log.d(TAG, "onServiceConnected()");  
-            flag = true;  
-        }  
-    }; 
     
     
     public class AutoStart extends BroadcastReceiver {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			SharedPreferences preferences = context.getSharedPreferences(TAG, MODE_PRIVATE);
-			boolean autoStart = preferences.getBoolean(KEY_AUTO_START, true);
-			if( autoStart ) {
+			int autoStart = NetService.getPreferences(context ,NetService.KEY_AUTO_START ,NetService.AUTO_START_ON);
+			if( NetService.AUTO_START_ON == autoStart ) {
 				startService(context);
 			}
 		}
-    	
     }
+    
+    
 }

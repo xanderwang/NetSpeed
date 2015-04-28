@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -19,11 +22,39 @@ public class NetService extends Service {
     private OverFlow mOverFlow;
     private static final int UPDATE_NET_DATA = 0;
     
-    private static final float CHECK_MOST   = .5f;
-    private static final float CHECK_NORMAL = 1.f;
-    private static final float CHECK_LOW    = 1.5f;
+    private static final String LABEL_PREFERENCE   = "Preferences";
     
-    private float mCheck = CHECK_NORMAL;
+    public static final String KEY_FREQUENCY   = "frequency";
+    public static final String KEY_AUTO_START  = "auto_start";
+    public static final String KEY_STYLE       = "style";
+    
+    public static final int FREQUENCY_FAST   = 1;
+    public static final int FREQUENCY_NORMAL = 2;
+    public static final int FREQUENCY_LOW    = 3;
+    private static final float TIME_FACTOR   = .5f;
+    
+    public static final int AUTO_START_ON  = 0;
+    public static final int AUTO_START_OFF = 1;
+    
+    private static final int STYLE_LIGHT = 0;
+    private static final int STYLE_DARK  = 1;
+    
+    public static void setPreferences( Context context , String key , int value) {
+    	SharedPreferences mPreferences = context.getApplicationContext()
+    			.getSharedPreferences(LABEL_PREFERENCE, MODE_PRIVATE);
+    	Editor mEditor = mPreferences.edit();
+    	mEditor.putInt(key, value);
+    	mEditor.commit();
+    }
+    
+    public static int getPreferences( Context context , String key , int defaltValue) {
+    	SharedPreferences mPreferences = context.getApplicationContext()
+    			.getSharedPreferences(LABEL_PREFERENCE, MODE_PRIVATE);
+    	return mPreferences.getInt(key, defaltValue);
+    }
+    
+    
+    private float mFrequency = FREQUENCY_NORMAL * TIME_FACTOR;
     
     private Handler mHandler = new Handler() {
         @Override
@@ -32,12 +63,12 @@ public class NetService extends Service {
             if ( UPDATE_NET_DATA == msg.what ) {
             	float speed = ((long) msg.obj ) * 1.f;
             	String speedFmt = "";
-            	if( speed < 1024 * mCheck ) {
-            		speedFmt = String.format("%.2f B/S", speed / mCheck ) ;
-            	} else if( speed < 1024 * 1024 * mCheck ) {
-            		speedFmt = String.format("%.2f K/S",  speed / ( 1024 * mCheck ) ) ;
+            	if( speed < 1024 * mFrequency ) {
+            		speedFmt = String.format("%.2f B/S", speed / mFrequency ) ;
+            	} else if( speed < 1024 * 1024 * mFrequency ) {
+            		speedFmt = String.format("%.2f K/S",  speed / ( 1024 * mFrequency ) ) ;
             	} else {
-            		speedFmt = String.format("%.2f M/S",  speed / ( 1024 * 1024 * mCheck ) ) ;
+            		speedFmt = String.format("%.2f M/S",  speed / ( 1024 * 1024 * mFrequency ) ) ;
             	}
                 mOverFlow.mShow.setText(speedFmt);
             }
@@ -74,7 +105,7 @@ public class NetService extends Service {
         public void run() {
             Log.d(TAG, "mRunnable run");
             refreshNet();
-            mHandler.postDelayed(mRunnable, (long)(mCheck * 1000));
+            mHandler.postDelayed(mRunnable, (long)(mFrequency * 1000));
         }
     };
 
@@ -103,8 +134,11 @@ public class NetService extends Service {
     public void onCreate() {
     	Log.d(TAG, "onCreate");
         super.onCreate();
+        mFrequency = getPreferences(this,KEY_FREQUENCY,FREQUENCY_NORMAL);
+        
         mOverFlow = new OverFlow(this);
         mOverFlow.show();
+        
         readNetFile();
         refreshData();
         mHandler.postDelayed(mRunnable, 0);
