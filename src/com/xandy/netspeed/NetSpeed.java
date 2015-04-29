@@ -26,6 +26,11 @@ public class NetSpeed extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_net_speed);
+        
+        mRowAutoOn = findViewById(R.id.row_auto_on);
+        mRowAutoOn.setOnClickListener(this);
+        mAutoOn = (CheckBox)findViewById(R.id.checkbox_auto_on);
+        
         startService(this);
     }
     
@@ -38,9 +43,16 @@ public class NetSpeed extends Activity implements OnClickListener {
     @Override
     public void onClick(View v) {
     	if( mRowAutoOn == v ) {
+    		mAutoOn.toggle();
+    		if( mAutoOn.isChecked() ) {
+    		    NetNotification.showNotifacation(this);
+    		} else {
+    		    NetNotification.cancelNtf(this);
+    		}
+    	} else if( mRowFrequency == v ) {
     		
-    	} else if( true ) {
-    		
+    	} else if( mRowStyle == v ) {
+    	    
     	}
     }
     
