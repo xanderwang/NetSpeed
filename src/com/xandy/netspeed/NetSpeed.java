@@ -1,6 +1,5 @@
 package com.xandy.netspeed;
 
-import android.R.menu;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
+import android.widget.PopupMenu;
 
 public class NetSpeed extends Activity implements OnClickListener {
     
@@ -50,7 +50,6 @@ public class NetSpeed extends Activity implements OnClickListener {
     		    NetNotification.cancelNtf(this);
     		}
     	} else if( mRowFrequency == v ) {
-    		
     	} else if( mRowStyle == v ) {
     	    
     	}

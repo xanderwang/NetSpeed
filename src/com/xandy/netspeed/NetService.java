@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -70,7 +71,8 @@ public class NetService extends Service {
             	} else {
             		speedFmt = String.format("%.2f M/S",  speed / ( 1024 * 1024 * mFrequency ) ) ;
             	}
-                mOverFlow.mShow.setText(speedFmt);
+                //mOverFlow.mSpeed.setText(speedFmt);
+                mOverFlow.updateSpeed(speedFmt);
             }
         }
     };
@@ -135,9 +137,8 @@ public class NetService extends Service {
     	Log.d(TAG, "onCreate");
         super.onCreate();
         mFrequency = getPreferences(this,KEY_FREQUENCY,FREQUENCY_NORMAL);
-        
         mOverFlow = new OverFlow(this);
-        mOverFlow.show();
+        mOverFlow.addToWindow();
         
         readNetFile();
         refreshData();
@@ -226,7 +227,7 @@ public class NetService extends Service {
         
         refreshData();
 
-        // 每秒下载的字节数
+        // 下载的字节数
         long netData = delta[0] + delta[4] + delta[8];
         Message msg = mHandler.obtainMessage();
         msg.what = UPDATE_NET_DATA;

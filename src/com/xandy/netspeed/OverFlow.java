@@ -3,32 +3,37 @@ package com.xandy.netspeed;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.telephony.PhoneStateListener;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class OverFlow {
+	private static final String TAG = "OverFlow";
+	
     WindowManager mWManger;
     WindowManager.LayoutParams mWManParams;
     public View mOverFlowView;
     public float mStateBarHeight = 20;
     
     //坐标
-    private float x;
-    private float y;
+    private float rawX;
+    private float rawY;
     
     private float mTouchStartX;
     private float mTouchStartY;
     
     //组件
     public ImageView mIcon;
-    public TextView mShow;
+    public TextView mSpeed;
     
     Context mContext;
     
@@ -42,11 +47,15 @@ public class OverFlow {
      */
     private void initView() {
     	mWManger = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+//    	mWManger.
     	mWManParams = new WindowManager.LayoutParams();
     	//设置LayoutParams的参数
     	//设置系统级窗口
-    	mWManParams.type = LayoutParams.TYPE_PHONE ; 
+    	//mWManParams.type = LayoutParams.TYPE_PHONE ; 
     	mWManParams.flags |= LayoutParams.FLAG_NOT_FOCUSABLE ;
+    	mWManParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ERROR ;
+    	mWManParams.flags |= LayoutParams.FLAG_FULLSCREEN |
+    			LayoutParams.FLAG_LAYOUT_IN_SCREEN  ;
     	//调整悬浮窗到左上角
     	mWManParams.gravity = Gravity.TOP | Gravity.LEFT;
     	//以屏幕左上角为源点，设置x，y
@@ -62,8 +71,8 @@ public class OverFlow {
     		@Override
     		public boolean onTouch(View v, MotionEvent event) {
     			//获取相对屏幕的位置，即以屏幕左上角为原点
-    			x = event.getRawX();
-    			y = event.getRawY();
+    			rawX = event.getRawX();
+    			rawY = event.getRawY();
     			switch(event.getAction()){
     			case MotionEvent.ACTION_DOWN :
     				//获取相对View的坐标,以view的左上角为原点
@@ -79,22 +88,37 @@ public class OverFlow {
     			return true;
     		}
     	});
-    	mShow = (TextView) mOverFlowView.findViewById(R.id.tv_show);
-    	Rect frame = new Rect();
-        mOverFlowView.getWindowVisibleDisplayFrame(frame);
-        // 状态栏高度
-        mStateBarHeight = frame.top;
+    	mSpeed = (TextView) mOverFlowView.findViewById(R.id.tv_show);
     }
-    public void show() {
+    
+    private void updateStateBarHeight() {
+    	Rect frame = new Rect();
+    	mOverFlowView.getWindowVisibleDisplayFrame(frame);
+    	// 状态栏高度
+    	mStateBarHeight = frame.top ;
+    }
+    
+    public void addToWindow() {
     	mWManger.addView(mOverFlowView, mWManParams);
+    }
+    
+    public void show( ) {
+    	updateStateBarHeight();
+    	Log.d(TAG, "mStateBarHeight = " + mStateBarHeight);
+    	boolean show = (0.f != mStateBarHeight);
+    	mOverFlowView.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+    
+    public void updateSpeed(String speed) {
+    	mSpeed.setText(speed);
     }
     
     /**
      * 更新悬浮窗的位置
      */
-    public void updatePosition(){
-        mWManParams.x = (int) ( x - mTouchStartX );
-        mWManParams.y = (int) ( y - mTouchStartY - mStateBarHeight );
+    private void updatePosition() {
+        mWManParams.x = (int) ( rawX - mTouchStartX );
+        mWManParams.y = (int) ( rawY - mTouchStartY  );
         mWManger.updateViewLayout(mOverFlowView, mWManParams);
     }
 }

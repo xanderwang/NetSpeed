@@ -28,7 +28,7 @@ public class NetNotification {
         Class<?> clazz;
         try {
             clazz = Class.forName("com.android.internal.R$id");
-            Field field = clazz.getField("right_icon");
+            Field field = clazz.getField("icon");
             field.setAccessible(true);
             int id_icon = field.getInt(null);
             if(notification.contentView != null ){  
