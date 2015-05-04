@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
-import android.widget.PopupMenu;
 
 public class NetSpeed extends Activity implements OnClickListener {
     
@@ -30,7 +29,13 @@ public class NetSpeed extends Activity implements OnClickListener {
         mRowAutoOn = findViewById(R.id.row_auto_on);
         mRowAutoOn.setOnClickListener(this);
         mAutoOn = (CheckBox)findViewById(R.id.checkbox_auto_on);
-        
+
+        mRowFrequency = findViewById(R.id.row_check_time);
+        mRowFrequency.setOnClickListener(this);
+
+        mRowStyle = findViewById(R.id.row_style);
+        mRowStyle.setOnClickListener(this);
+
         startService(this);
     }
     
@@ -44,17 +49,22 @@ public class NetSpeed extends Activity implements OnClickListener {
     public void onClick(View v) {
     	if( mRowAutoOn == v ) {
     		mAutoOn.toggle();
-    		if( mAutoOn.isChecked() ) {
-    		    NetNotification.showNotifacation(this);
-    		} else {
-    		    NetNotification.cancelNtf(this);
-    		}
+    		int mode = mAutoOn.isChecked() ? NetService.AUTO_START_ON : NetService.AUTO_START_OFF;
+            //NetService.setPreferences(this,NetService.KEY_AUTO_START,mode);
     	} else if( mRowFrequency == v ) {
+            changeFrequency();
     	} else if( mRowStyle == v ) {
-    	    
+    	    changeStyle();
     	}
     }
-    
+
+    private void changeFrequency() {
+
+    }
+
+    private void changeStyle() {
+
+    }
     
     
     public class AutoStart extends BroadcastReceiver {

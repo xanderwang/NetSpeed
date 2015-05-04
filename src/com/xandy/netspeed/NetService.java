@@ -30,8 +30,8 @@ public class NetService extends Service {
     public static final String KEY_STYLE       = "style";
     
     public static final int FREQUENCY_FAST   = 1;
-    public static final int FREQUENCY_NORMAL = 2;
-    public static final int FREQUENCY_LOW    = 3;
+    public static final int FREQUENCY_NORMAL = 3;
+    public static final int FREQUENCY_LOW    = 5;
     private static final float TIME_FACTOR   = .5f;
     
     public static final int AUTO_START_ON  = 0;
@@ -53,29 +53,38 @@ public class NetService extends Service {
     			.getSharedPreferences(LABEL_PREFERENCE, MODE_PRIVATE);
     	return mPreferences.getInt(key, defaltValue);
     }
-    
-    
-    private float mFrequency = FREQUENCY_NORMAL * TIME_FACTOR;
+
+    private float mFrequency = FREQUENCY_NORMAL * TIME_FACTOR ;
     
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if ( UPDATE_NET_DATA == msg.what ) {
-            	float speed = ((long) msg.obj ) * 1.f;
+            	long netData = ((Long) msg.obj );
             	String speedFmt = "";
-            	if( speed < 1024 * mFrequency ) {
-            		speedFmt = String.format("%.2f B/S", speed / mFrequency ) ;
-            	} else if( speed < 1024 * 1024 * mFrequency ) {
-            		speedFmt = String.format("%.2f K/S",  speed / ( 1024 * mFrequency ) ) ;
+                float speed = 0.f;
+            	if( netData < 1000 * mFrequency ) {
+                    speed = netData / mFrequency;
+            		speedFmt = String.format("%.2f B/S", speed ) ;
+            	} else if( netData < 1000000 * mFrequency ) {
+                    speed = netData/ ( mFrequency * 1000 );
+            		speedFmt = String.format("%.2f K/S",  speed ) ;
             	} else {
-            		speedFmt = String.format("%.2f M/S",  speed / ( 1024 * 1024 * mFrequency ) ) ;
+                    speed = netData / (mFrequency * 1000000 );
+            		speedFmt = String.format("%.2f M/S",  speed ) ;
             	}
                 //mOverFlow.mSpeed.setText(speedFmt);
+                //showNtfSpeed( (int)(speed / (1024 * 1024 * mFrequency)) );
+                showNtfSpeed( (int)speed , speedFmt);
                 mOverFlow.updateSpeed(speedFmt);
             }
         }
     };
+
+    public void showNtfSpeed( int speed ,String speedFmt) {
+        NetNotification.showNotifacation(this,speed,speedFmt);
+    }
     
     // 系统流量文件
     public final String NET_FILE = "/proc/self/net/dev";
@@ -102,7 +111,7 @@ public class NetService extends Service {
      * 定义线程周期性地获取网速
      */
     private Runnable mRunnable = new Runnable() {
-        // 每3秒钟获取一次数据，求平均，以减少读取系统文件次数，减少资源消耗
+        // 每隔一段时间获取一次数据，求平均，以减少读取系统文件次数，减少资源消耗
         @Override
         public void run() {
             Log.d(TAG, "mRunnable run");
@@ -136,13 +145,24 @@ public class NetService extends Service {
     public void onCreate() {
     	Log.d(TAG, "onCreate");
         super.onCreate();
-        mFrequency = getPreferences(this,KEY_FREQUENCY,FREQUENCY_NORMAL);
+
+        updateFrequency();
+
         mOverFlow = new OverFlow(this);
         mOverFlow.addToWindow();
-        
+
         readNetFile();
         refreshData();
         mHandler.postDelayed(mRunnable, 0);
+    }
+
+    public void updateFrequency() {
+        mFrequency = getPreferences(this,KEY_FREQUENCY,FREQUENCY_NORMAL);
+        mFrequency *= TIME_FACTOR;
+    }
+
+    public void updateStyle() {
+
     }
 
     /**
