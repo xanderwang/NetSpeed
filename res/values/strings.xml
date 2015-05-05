@@ -2,7 +2,20 @@
 <resources>
 
     <string name="app_name">NetSpeed</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+
+    <string name="working">Working</string>
+    <string name="speed_tip">the speed is </string>
+
+    <string name="Auto_on">Auto ON</string>
+
+    <string name="frequency">Frequency</string>
+    <string name="frequency_fast">Fast</string>
+    <string name="frequency_normal">Normal</string>
+    <string name="frequency_low">Low</string>
+
+    <string name="style">Show Style</string>
+    <string name="style_ntf">Notification</string>
+    <string name="style_overview">OverView</string>
+    <string name="style_both">Both</string>
 
 </resources>

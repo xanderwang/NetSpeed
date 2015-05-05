@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../ExpandDialog/ExpandDialogLibrary/ExpandDialogLibrary.iml" filepath="$PROJECT_DIR$/../ExpandDialog/ExpandDialogLibrary/ExpandDialogLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/NetSpeed.iml" filepath="$PROJECT_DIR$/NetSpeed.iml" />
     </modules>
   </component>

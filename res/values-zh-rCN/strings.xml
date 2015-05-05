@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">网速检测</string>
+
+    <string name="working">检测中</string>
+    <string name="speed_tip">当前下载网速为 </string>
+
+    <string name="Auto_on">开机自启</string>
+
+    <string name="frequency">检测频率</string>
+    <string name="frequency_fast">快</string>
+    <string name="frequency_normal">正常</string>
+    <string name="frequency_low">慢</string>
+
+    <string name="style">显示样式</string>
+    <string name="style_ntf">通知栏</string>
+    <string name="style_overview">悬浮窗</string>
+    <string name="style_both">两者都有</string>
+
+</resources>

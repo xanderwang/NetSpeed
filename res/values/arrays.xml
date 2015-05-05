@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_frequency">
+        <item>@string/frequency_fast</item>
+        <item>@string/frequency_normal</item>
+        <item>@string/frequency_low</item>
+    </string-array>
+    <string-array name="array_style">
+        <item>@string/style_ntf</item>
+        <item>@string/style_overview</item>
+        <!--<item>@string/style_both</item>-->
+    </string-array>
+</resources>

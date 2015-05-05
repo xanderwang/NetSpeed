@@ -29,16 +29,24 @@ public class NetService extends Service {
     public static final String KEY_AUTO_START  = "auto_start";
     public static final String KEY_STYLE       = "style";
     
-    public static final int FREQUENCY_FAST   = 1;
-    public static final int FREQUENCY_NORMAL = 3;
-    public static final int FREQUENCY_LOW    = 5;
-    private static final float TIME_FACTOR   = .5f;
+    public static final int FREQUENCY_FAST    = 0;
+    public static final int FREQUENCY_NORMAL  = 1;
+    public static final int FREQUENCY_LOW     = 2;
+    private static final int TIME_FACTOR      = 1;
     
     public static final int AUTO_START_ON  = 0;
     public static final int AUTO_START_OFF = 1;
-    
-    private static final int STYLE_LIGHT = 0;
-    private static final int STYLE_DARK  = 1;
+
+    public static final int STYLE_NTF   = 0;
+    public static final int STYLE_OVER  = 1;
+    public static final int STYLE_BOTH  = 2;
+
+
+    private static NetService mService;
+
+    public static NetService instance() {
+        return mService;
+    }
     
     public static void setPreferences( Context context , String key , int value) {
     	SharedPreferences mPreferences = context.getApplicationContext()
@@ -54,7 +62,8 @@ public class NetService extends Service {
     	return mPreferences.getInt(key, defaltValue);
     }
 
-    private float mFrequency = FREQUENCY_NORMAL * TIME_FACTOR ;
+    private int mFrequency = FREQUENCY_NORMAL + TIME_FACTOR ;
+    private int mStyle = STYLE_NTF;
     
     private Handler mHandler = new Handler() {
         @Override
@@ -76,8 +85,11 @@ public class NetService extends Service {
             	}
                 //mOverFlow.mSpeed.setText(speedFmt);
                 //showNtfSpeed( (int)(speed / (1024 * 1024 * mFrequency)) );
-                showNtfSpeed( (int)speed , speedFmt);
-                mOverFlow.updateSpeed(speedFmt);
+                if( mStyle == STYLE_NTF ) {
+                    showNtfSpeed( (int)speed , speedFmt);
+                } else {
+                    mOverFlow.updateSpeed(speedFmt);
+                }
             }
         }
     };
@@ -116,13 +128,8 @@ public class NetService extends Service {
         public void run() {
             Log.d(TAG, "mRunnable run");
             refreshNet();
-            mHandler.postDelayed(mRunnable, (long)(mFrequency * 1000));
+            mHandler.postDelayed(mRunnable, mFrequency * 1000 );
         }
-    };
-
-    @Override
-    public void onStart(Intent intent, int startId) {
-        Log.d(TAG, "onStart");
     };
 
     /**
@@ -145,24 +152,43 @@ public class NetService extends Service {
     public void onCreate() {
     	Log.d(TAG, "onCreate");
         super.onCreate();
+        mService = this;
+        initData();
+    }
 
-        updateFrequency();
-
+    private void initData() {
         mOverFlow = new OverFlow(this);
-        mOverFlow.addToWindow();
+        mStyle = getPreferences(this,KEY_STYLE,STYLE_NTF);
+        if( STYLE_NTF == mStyle ) {
+            mOverFlow.removeFromWindow();
+        } else if( STYLE_OVER == mStyle ) {
+            mOverFlow.addToWindow();
+        }
+
+        mFrequency += TIME_FACTOR;
+        mFrequency = getPreferences(this,KEY_FREQUENCY,FREQUENCY_NORMAL);
 
         readNetFile();
         refreshData();
+
         mHandler.postDelayed(mRunnable, 0);
     }
 
-    public void updateFrequency() {
-        mFrequency = getPreferences(this,KEY_FREQUENCY,FREQUENCY_NORMAL);
-        mFrequency *= TIME_FACTOR;
+    public void updateFrequency( int frequency ) {
+        mFrequency = frequency + TIME_FACTOR;
     }
 
-    public void updateStyle() {
-
+    public void updateStyle( int style ) {
+        if( mStyle == style ) {
+            return;
+        }
+        mStyle = style;
+        if( STYLE_NTF == style ) {
+            mOverFlow.removeFromWindow();
+        } else if( STYLE_OVER == style ) {
+            mOverFlow.addToWindow();
+            NetNotification.cancelNtf(this);
+        }
     }
 
     /**

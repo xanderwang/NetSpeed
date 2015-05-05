@@ -34,6 +34,8 @@ public class OverFlow {
     //组件
     public ImageView mIcon;
     public TextView mSpeed;
+
+	private boolean mHasAdd = false;
     
     Context mContext;
     
@@ -100,7 +102,15 @@ public class OverFlow {
     
     public void addToWindow() {
     	mWManger.addView(mOverFlowView, mWManParams);
+		mHasAdd = true;
     }
+
+	public void removeFromWindow() {
+		if( mHasAdd ) {
+			mWManger.removeView(mOverFlowView);
+			mHasAdd = false;
+		}
+	}
     
     public void show( ) {
     	updateStateBarHeight();

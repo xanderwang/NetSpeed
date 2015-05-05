@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 
 
@@ -20,8 +21,12 @@ public class NetNotification {
         notification.icon = getNtfIcon(speed);
         notification.when = System.currentTimeMillis();
         notification.flags |= Notification.FLAG_ONGOING_EVENT;
-        PendingIntent p = null;
-        notification.setLatestEventInfo(context, "Networking", "speed is " +speedFmt , p);
+        PendingIntent p = PendingIntent.getActivity(context,0,new Intent(context,NetSpeed.class),0);
+
+        String title = context.getResources().getString(R.string.working);
+        String speedTip = context.getResources().getString(R.string.speed_tip);
+
+        notification.setLatestEventInfo(context, title, speedTip + speedFmt , p);
         /*
         Bitmap icon = Bitmap.createBitmap(64, 64, Bitmap.Config.ARGB_8888);
         Canvas canva = new Canvas(icon);
