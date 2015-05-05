@@ -76,6 +76,7 @@ public class NetService extends Service {
             	if( netData < 1000 * mFrequency ) {
                     speed = netData / mFrequency;
             		speedFmt = String.format("%.2f B/S", speed ) ;
+                    speed = 0 ;//   小于1kb/s 默认算作 0kb/s
             	} else if( netData < 1000000 * mFrequency ) {
                     speed = netData/ ( mFrequency * 1000 );
             		speedFmt = String.format("%.2f K/S",  speed ) ;
@@ -94,6 +95,11 @@ public class NetService extends Service {
         }
     };
 
+    /**
+     *
+     * @param speed 当前网速，以kb/s为参数
+     * @param speedFmt
+     */
     public void showNtfSpeed( int speed ,String speedFmt) {
         NetNotification.showNotifacation(this,speed,speedFmt);
     }
