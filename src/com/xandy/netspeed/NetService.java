@@ -43,6 +43,7 @@ public class NetService extends Service {
 
 
     private static NetService mService;
+    private static boolean mHasStartHandel = false;
 
     public static NetService instance() {
         return mService;
@@ -134,6 +135,7 @@ public class NetService extends Service {
         public void run() {
             Log.d(TAG, "mRunnable run");
             refreshNet();
+            mHasStartHandel = true;
             mHandler.postDelayed(mRunnable, mFrequency * 1000 );
         }
     };
@@ -176,8 +178,10 @@ public class NetService extends Service {
 
         readNetFile();
         refreshData();
-
-        mHandler.postDelayed(mRunnable, 0);
+        if( !mHasStartHandel ) {
+            mHandler.postDelayed(mRunnable, 0);
+            mHasStartHandel = true;
+        }
     }
 
     public void updateFrequency( int frequency ) {

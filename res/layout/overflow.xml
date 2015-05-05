@@ -16,8 +16,7 @@
         android:id="@+id/tv_show"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="1dp"
-        android:text="ssss"
+        android:paddingLeft="2dp"
         android:textColor="#ffffff"
         android:textSize="12sp" />
 
