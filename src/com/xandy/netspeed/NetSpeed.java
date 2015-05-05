@@ -7,12 +7,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import com.xandy.expanddialog.ExpandDialog;
 
-public class NetSpeed extends Activity implements View.OnClickListener , DialogInterface.OnClickListener {
+public class NetSpeed extends Activity implements View.OnClickListener {
     
     private static final String TAG = "NetSpeed";
     private boolean flag;  
@@ -76,11 +77,6 @@ public class NetSpeed extends Activity implements View.OnClickListener , DialogI
     	}
     }
 
-    @Override
-    public void onClick(DialogInterface dialog, int which) {
-
-    }
-
     private DialogInterface.OnClickListener mFrequencyListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialog, int which) {
@@ -95,7 +91,8 @@ public class NetSpeed extends Activity implements View.OnClickListener , DialogI
         int frequency = NetService.getPreferences(this,NetService.KEY_FREQUENCY,NetService.FREQUENCY_NORMAL);
         ExpandDialog mFreqrency = new ExpandDialog.Builder(this)
                 .setTitle(R.string.frequency)
-                .setSingleChoiceItems(R.array.array_frequency,frequency, mFrequencyListener)
+                .setGravity(Gravity.TOP)
+                .setSingleChoiceItems(R.array.array_frequency, frequency, mFrequencyListener)
                 .create();
         mFreqrency.show();
     }
@@ -114,6 +111,7 @@ public class NetSpeed extends Activity implements View.OnClickListener , DialogI
         int style = NetService.getPreferences(this,NetService.KEY_STYLE,NetService.STYLE_NTF);
         ExpandDialog mFreqrency = new ExpandDialog.Builder(this)
                 .setTitle(R.string.style)
+                .setGravity(Gravity.TOP)
                 .setSingleChoiceItems(R.array.array_style, style, mStyleListener)
                 .create();
         mFreqrency.show();

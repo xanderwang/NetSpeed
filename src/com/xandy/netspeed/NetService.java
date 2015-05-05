@@ -173,8 +173,8 @@ public class NetService extends Service {
             mOverFlow.addToWindow();
         }
 
-        mFrequency += TIME_FACTOR;
-        mFrequency = getPreferences(this,KEY_FREQUENCY,FREQUENCY_NORMAL);
+        int frequency = getPreferences(this,KEY_FREQUENCY,FREQUENCY_NORMAL);
+        updateFrequency(frequency);
 
         readNetFile();
         refreshData();
@@ -230,7 +230,7 @@ public class NetService extends Service {
                 	netData = data_temp[1].split("-");
                     for (k = 0; k < ethData.length && k < netData.length; k++) {
                     	ethData[k] = netData[k];
-                    	Log.d(TAG, "ethData " + ethData[k]);
+                    	//Log.d(TAG, "ethData " + ethData[k]);
                     }
                 } else if ( line.contains(GPRSLINE) ) {
                 	data_temp[1] = p.matcher(data_temp[1].trim()).replaceAll("-");
@@ -238,7 +238,7 @@ public class NetService extends Service {
                     netData = data_temp[1].split("-");
                     for (k = 0; k < gprsData.length; k++) {
                     	gprsData[k] = netData[k];
-                    	Log.d(TAG, "gprsData " + gprsData[k]);
+                    	//Log.d(TAG, "gprsData " + gprsData[k]);
                     }
                 } else if ( line.contains(WIFILINE) ) {
                 	data_temp[1] = p.matcher(data_temp[1].trim()).replaceAll("-");
@@ -246,7 +246,7 @@ public class NetService extends Service {
                     netData = data_temp[1].split("-");
                     for (k = 0 ; k < wifiData.length; k++) {
                     	wifiData[k] = netData[k];
-                    	Log.d(TAG, "wifiData " + wifiData[k]);
+                    	//Log.d(TAG, "wifiData " + wifiData[k]);
                     }
                 }
             }
