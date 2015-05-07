@@ -1,20 +1,19 @@
 package com.xandy.netspeed;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.regex.Pattern;
-
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class NetService extends Service {
     
@@ -48,7 +47,13 @@ public class NetService extends Service {
     public static NetService instance() {
         return mService;
     }
-    
+
+    /**
+     * 设置默认值
+     * @param context
+     * @param key
+     * @param value
+     */
     public static void setPreferences( Context context , String key , int value) {
     	SharedPreferences mPreferences = context.getApplicationContext()
     			.getSharedPreferences(LABEL_PREFERENCE, MODE_PRIVATE);
@@ -56,7 +61,14 @@ public class NetService extends Service {
     	mEditor.putInt(key, value);
     	mEditor.commit();
     }
-    
+
+    /**
+     * 获取默认值
+     * @param context
+     * @param key
+     * @param defaltValue
+     * @return
+     */
     public static int getPreferences( Context context , String key , int defaltValue) {
     	SharedPreferences mPreferences = context.getApplicationContext()
     			.getSharedPreferences(LABEL_PREFERENCE, MODE_PRIVATE);
