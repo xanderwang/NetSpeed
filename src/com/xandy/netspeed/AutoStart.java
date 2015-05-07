@@ -7,6 +7,7 @@ import android.util.Log;
 
 /**
  * Created by wangxiaoyang on 15-5-5.
+ * 检测开机广播，以启动检测网速service
  */
 public class AutoStart extends BroadcastReceiver {
 

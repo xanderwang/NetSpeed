@@ -15,7 +15,6 @@ import com.xandy.expanddialog.ExpandDialog;
 public class NetSpeed extends Activity implements View.OnClickListener {
     
     private static final String TAG = "NetSpeed";
-    private boolean flag;  
     
     private View mRowAutoOn;
     private CheckBox mAutoOn;
@@ -68,7 +67,7 @@ public class NetSpeed extends Activity implements View.OnClickListener {
     	if( mRowAutoOn == v ) {
     		mAutoOn.toggle();
     		int mode = mAutoOn.isChecked() ? NetService.AUTO_START_ON : NetService.AUTO_START_OFF;
-            //NetService.setPreferences(this,NetService.KEY_AUTO_START,mode);
+            NetService.setPreferences(this,NetService.KEY_AUTO_START,mode);
     	} else if( mRowFrequency == v ) {
             changeFrequency();
     	} else if( mRowStyle == v ) {

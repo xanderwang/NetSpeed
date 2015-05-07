@@ -302,7 +302,11 @@ public class NetService extends Service {
         msg.obj = netData;
         mHandler.sendMessage(msg);
     }
-    
+
+    /**
+     * 刷新数据
+     *
+     */
     private void refreshData() {
     	data[0] = ethData[0];
         data[1] = ethData[1];

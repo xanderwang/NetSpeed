@@ -14,12 +14,13 @@ public class NetNotification {
         notification.icon = getNtfIcon(speed);
         notification.when = System.currentTimeMillis();
         notification.flags |= Notification.FLAG_ONGOING_EVENT;
-        PendingIntent p = PendingIntent.getActivity(context,0,new Intent(context,NetSpeed.class),0);
+        PendingIntent netActivity = PendingIntent.getActivity(
+                context,0,new Intent(context,NetSpeed.class),0);
 
         String title = context.getResources().getString(R.string.working);
         String speedTip = context.getResources().getString(R.string.speed_tip);
 
-        notification.setLatestEventInfo(context, title, speedTip + speedFmt , p);
+        notification.setLatestEventInfo(context, title, speedTip + speedFmt , netActivity);
         /*
         Bitmap icon = Bitmap.createBitmap(64, 64, Bitmap.Config.ARGB_8888);
         Canvas canva = new Canvas(icon);
