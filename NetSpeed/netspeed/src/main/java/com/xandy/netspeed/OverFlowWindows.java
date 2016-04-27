@@ -10,8 +10,8 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class OverFlow {
-	private static final String TAG = "OverFlow";
+public class OverFlowWindows {
+	private static final String TAG = "OverFlowWindows";
 	
     WindowManager mWManger;
     LayoutParams mWManParams;
@@ -33,7 +33,7 @@ public class OverFlow {
     
     Context mContext;
     
-    public OverFlow(Context context) {
+    public OverFlowWindows(Context context) {
         this.mContext = context;
         initView();
     }

@@ -9,23 +9,26 @@ import android.util.Log;
  * Created by wangxiaoyang on 15-5-5.
  * 检测开机广播，以启动检测网速service
  */
-public class AutoStart extends BroadcastReceiver {
-
-    private static final String TAG = "AutoStart";
-
+public class BootReceiver extends BroadcastReceiver {
+    private static final String TAG = "BootReceiver";
     private final String ACTION_BOOT = "android.intent.action.BOOT_COMPLETED";
 
     private void startService( Context context ) {
         Intent intent = new Intent();
-        intent.setClass(context, NetService.class);
+        intent.setClass(context, NetSpeedService.class);
         context.startService(intent);
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "intent = " + intent.toString());
-        int autoStart = NetService.getPreferences(context ,NetService.KEY_AUTO_START ,NetService.AUTO_START_ON);
-        if( ACTION_BOOT.equals(intent.getAction()) &&  NetService.AUTO_START_ON == autoStart ) {
+        int autoStart = NetSpeedService.getPreferences(
+                context ,
+                NetSpeedService.KEY_AUTO_START ,
+                NetSpeedService.AUTO_START_ON
+        );
+        if( ACTION_BOOT.equals(intent.getAction()) &&
+                NetSpeedService.AUTO_START_ON == autoStart ) {
             startService(context);
         }
     }

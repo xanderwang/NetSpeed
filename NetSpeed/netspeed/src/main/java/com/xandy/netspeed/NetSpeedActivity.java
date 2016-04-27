@@ -12,9 +12,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import com.xandy.expanddialog.ExpandDialog;
 
-public class NetSpeed extends Activity implements View.OnClickListener {
+public class NetSpeedActivity extends Activity implements View.OnClickListener {
     
-    private static final String TAG = "NetSpeed";
+    private static final String TAG = "NetSpeedActivity";
     
     private View mRowAutoOn;
     private CheckBox mAutoOn;
@@ -43,14 +43,14 @@ public class NetSpeed extends Activity implements View.OnClickListener {
         mRowFrequency = findViewById(R.id.row_frequency);
         mRowFrequency.setOnClickListener(this);
         mFrequencyText = (TextView) findViewById(R.id.frequency_value);
-        int which = NetService.getPreferences(this,NetService.KEY_FREQUENCY,NetService.FREQUENCY_NORMAL);
+        int which = NetSpeedService.getPreferences(this, NetSpeedService.KEY_FREQUENCY, NetSpeedService.FREQUENCY_NORMAL);
         String Str = getResources().getStringArray(R.array.array_frequency)[which];
         mFrequencyText.setText(Str);
 
         mRowStyle = findViewById(R.id.row_style);
         mRowStyle.setOnClickListener(this);
         mStyleText = (TextView)findViewById(R.id.style_value);
-        which = NetService.getPreferences(this,NetService.KEY_STYLE,NetService.STYLE_NTF);
+        which = NetSpeedService.getPreferences(this, NetSpeedService.KEY_STYLE, NetSpeedService.STYLE_NTF);
         Str = getResources().getStringArray(R.array.array_style)[which];
         mStyleText.setText(Str);
 
@@ -58,7 +58,7 @@ public class NetSpeed extends Activity implements View.OnClickListener {
     
     private void startService( Context context ) {
         Intent intent = new Intent();
-        intent.setClass(context, NetService.class);
+        intent.setClass(context, NetSpeedService.class);
         startService(intent);
     }
     
@@ -66,8 +66,8 @@ public class NetSpeed extends Activity implements View.OnClickListener {
     public void onClick(View v) {
     	if( mRowAutoOn == v ) {
     		mAutoOn.toggle();
-    		int mode = mAutoOn.isChecked() ? NetService.AUTO_START_ON : NetService.AUTO_START_OFF;
-            NetService.setPreferences(this,NetService.KEY_AUTO_START,mode);
+    		int mode = mAutoOn.isChecked() ? NetSpeedService.AUTO_START_ON : NetSpeedService.AUTO_START_OFF;
+            NetSpeedService.setPreferences(this, NetSpeedService.KEY_AUTO_START,mode);
     	} else if( mRowFrequency == v ) {
             changeFrequency();
     	} else if( mRowStyle == v ) {
@@ -80,13 +80,13 @@ public class NetSpeed extends Activity implements View.OnClickListener {
         public void onClick(DialogInterface dialog, int which) {
             String frequencyStr = getResources().getStringArray(R.array.array_frequency)[which];
             mFrequencyText.setText(frequencyStr);
-            NetService.setPreferences(getApplicationContext(),NetService.KEY_FREQUENCY,which);
-            NetService.instance().updateFrequency(which);
+            NetSpeedService.setPreferences(getApplicationContext(), NetSpeedService.KEY_FREQUENCY,which);
+            NetSpeedService.instance().updateFrequency(which);
         }
     };
 
     private void changeFrequency() {
-        int frequency = NetService.getPreferences(this,NetService.KEY_FREQUENCY,NetService.FREQUENCY_NORMAL);
+        int frequency = NetSpeedService.getPreferences(this, NetSpeedService.KEY_FREQUENCY, NetSpeedService.FREQUENCY_NORMAL);
         ExpandDialog mFreqrency = new ExpandDialog.Builder(this)
                 .setTitle(R.string.frequency)
                 .setGravity(Gravity.TOP)
@@ -100,13 +100,13 @@ public class NetSpeed extends Activity implements View.OnClickListener {
         public void onClick(DialogInterface dialog, int which) {
             String styleStr = getResources().getStringArray(R.array.array_style)[which];
             mStyleText.setText(styleStr);
-            NetService.setPreferences(getApplicationContext(),NetService.KEY_STYLE,which);
-            NetService.instance().updateStyle(which);
+            NetSpeedService.setPreferences(getApplicationContext(), NetSpeedService.KEY_STYLE,which);
+            NetSpeedService.instance().updateStyle(which);
         }
     };
 
     private void changeStyle() {
-        int style = NetService.getPreferences(this,NetService.KEY_STYLE,NetService.STYLE_NTF);
+        int style = NetSpeedService.getPreferences(this, NetSpeedService.KEY_STYLE, NetSpeedService.STYLE_NTF);
         ExpandDialog mFreqrency = new ExpandDialog.Builder(this)
                 .setTitle(R.string.style)
                 .setGravity(Gravity.TOP)

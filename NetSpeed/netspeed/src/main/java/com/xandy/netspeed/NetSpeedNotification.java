@@ -6,7 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-public class NetNotification {
+public class NetSpeedNotification {
 
     public static void showNotifacation(Context context, int speed ,String speedFmt ) {
         
@@ -15,12 +15,12 @@ public class NetNotification {
         notification.when = System.currentTimeMillis();
         notification.flags |= Notification.FLAG_ONGOING_EVENT;
         PendingIntent netActivity = PendingIntent.getActivity(
-                context,0,new Intent(context,NetSpeed.class),0);
+                context,0,new Intent(context,NetSpeedActivity.class),0);
 
         String title = context.getResources().getString(R.string.working);
         String speedTip = context.getResources().getString(R.string.speed_tip);
 
-//        notification.setLatestEventInfo(context, title, speedTip + speedFmt , netActivity);
+        notification.setLatestEventInfo(context, title, speedTip + speedFmt , netActivity);
         /*
         Bitmap icon = Bitmap.createBitmap(64, 64, Bitmap.Config.ARGB_8888);
         Canvas canva = new Canvas(icon);
@@ -37,9 +37,9 @@ public class NetNotification {
             e.printStackTrace();
         }
         */
-//        NotificationManager nManager = (NotificationManager)
-//                context.getSystemService(context.NOTIFICATION_SERVICE);
-//        nManager.notify(1, notification);
+        NotificationManager nManager = (NotificationManager)
+                context.getSystemService(context.NOTIFICATION_SERVICE);
+        nManager.notify(1, notification);
     }
     
     public static void cancelNtf( Context context ) {
