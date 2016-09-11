@@ -1,4 +1,4 @@
-package com.xandy.netspeed;
+package com.xander.netspeed;
 
 import android.app.Service;
 import android.content.Context;
@@ -24,22 +24,22 @@ public class NetSpeedService extends Service {
 
     private static final String LABEL_PREFERENCE = "Preferences";
 
-    public static final String KEY_FREQUENCY = "frequency";
-    public static final String KEY_AUTO_START = "auto_start";
-    public static final String KEY_STYLE = "style";
+    public static final String KEY_FREQUENCY    = "frequency";
+    public static final String KEY_AUTO_START   = "auto_start";
+    public static final String KEY_STYLE        = "style";
 
-    public static final int FREQUENCY_FAST = 0;
-    public static final int FREQUENCY_NORMAL = 1;
-    public static final int FREQUENCY_LOW = 2;
+    public static final int FREQUENCY_FAST      = 1;
+    public static final int FREQUENCY_NORMAL    = 2;
+    public static final int FREQUENCY_LOW       = 3;
 
-    private static final int TIME_FACTOR = 1;
+    private static final int TIME_FACTOR        = 1;
 
-    public static final int AUTO_START_ON = 0;
-    public static final int AUTO_START_OFF = 1;
+    public static final int AUTO_START_ON       = 0;
+    public static final int AUTO_START_OFF      = 1;
 
-    public static final int STYLE_NTF = 0;
-    public static final int STYLE_OVER = 1;
-    public static final int STYLE_BOTH = 2;
+    public static final int STYLE_NTF           = 0;
+    public static final int STYLE_OVER          = 1;
+    public static final int STYLE_BOTH          = 2;
 
 
     private static NetSpeedService mService;

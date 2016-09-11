@@ -2,96 +2,102 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical"
-    tools:context=".NetSpeedActivity" >
+    tools:context=".NetSpeedActivity">
 
     <TextView
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="@string/app_name"
-            android:background="#000000"
-            android:id="@+id/title"
-            android:paddingLeft="10dp"
-            android:gravity="center_vertical"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="#ffffff"/>
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#000000"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="@string/app_name"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <RelativeLayout
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
         android:id="@+id/row_auto_on"
-        android:layout_width="match_parent" 
-        android:layout_height="@dimen/row_height" >
-        <TextView 
-            android:id="@+id/text_auto_on" 
-            android:layout_width="wrap_content" 
-            android:layout_height="match_parent" 
-            android:gravity="center_vertical" 
-            android:layout_alignParentLeft="true"
-            android:text="@string/Auto_on" />
-        <CheckBox 
-            android:id="@+id/checkbox_auto_on" 
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/text_auto_on"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:checked="true"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true" />
-    </RelativeLayout>
-    <View 
-        android:layout_width="match_parent" 
-        android:layout_height="1px" 
-        android:background="#000000" />
-    
-    <RelativeLayout
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-        android:id="@+id/row_frequency"
-        android:layout_width="match_parent" 
-        android:layout_height="@dimen/row_height" >
-        <TextView 
-            android:id="@+id/frequency_key"
-            android:layout_width="wrap_content" 
-            android:layout_height="match_parent" 
-            android:gravity="center_vertical" 
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:text="@string/frequency" />
-        
-        <TextView 
-            android:id="@+id/frequency_value"
-            android:layout_width="wrap_content" 
-            android:layout_height="match_parent" 
-            android:gravity="center_vertical" 
+            android:gravity="center_vertical"
+            android:text="@string/Auto_on" />
+
+        <CheckBox
+            android:id="@+id/checkbox_auto_on"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:checked="true" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#000000" />
+
+    <RelativeLayout
+        android:id="@+id/row_frequency"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
+
+        <TextView
+            android:id="@+id/frequency_key"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:gravity="center_vertical"
+            android:text="@string/frequency" />
+
+        <TextView
+            android:id="@+id/frequency_value"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
             android:text="@string/frequency_normal" />
 
     </RelativeLayout>
-    <View 
-        android:layout_width="match_parent" 
-        android:layout_height="1px" 
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
         android:background="#000000" />
-    
-    
+
+
     <RelativeLayout
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-        android:id="@+id/row_style" 
-        android:layout_width="match_parent" 
-        android:layout_height="@dimen/row_height" >
-        <TextView 
+        android:id="@+id/row_style"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/row_height"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
+
+        <TextView
             android:id="@+id/style_key"
-            android:layout_width="wrap_content" 
-            android:layout_height="match_parent" 
-            android:gravity="center_vertical" 
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
+            android:gravity="center_vertical"
             android:text="@string/style" />
-        <TextView 
+
+        <TextView
             android:id="@+id/style_value"
-            android:layout_width="wrap_content" 
-            android:layout_height="match_parent" 
-            android:gravity="center_vertical" 
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
             android:text="@string/style_ntf" />
     </RelativeLayout>
 

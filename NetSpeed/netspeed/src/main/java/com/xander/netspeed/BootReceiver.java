@@ -1,4 +1,4 @@
-package com.xandy.netspeed;
+package com.xander.netspeed;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

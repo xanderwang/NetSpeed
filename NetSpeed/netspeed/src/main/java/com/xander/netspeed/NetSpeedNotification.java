@@ -1,4 +1,4 @@
-package com.xandy.netspeed;
+package com.xander.netspeed;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -15,12 +15,16 @@ public class NetSpeedNotification {
         notification.when = System.currentTimeMillis();
         notification.flags |= Notification.FLAG_ONGOING_EVENT;
         PendingIntent netActivity = PendingIntent.getActivity(
-                context,0,new Intent(context,NetSpeedActivity.class),0);
+                context,
+                0,
+                new Intent(context,NetSpeedActivity.class),
+                0
+        );
 
-        String title = context.getResources().getString(R.string.working);
-        String speedTip = context.getResources().getString(R.string.speed_tip);
+        String title = context.getResources().getString(com.xander.netspeed.R.string.working);
+        String speedTip = context.getResources().getString(com.xander.netspeed.R.string.speed_tip);
 
-        notification.setLatestEventInfo(context, title, speedTip + speedFmt , netActivity);
+        notification.setLatestEventInfo(context, title, speedTip + " " + speedFmt , netActivity);
         /*
         Bitmap icon = Bitmap.createBitmap(64, 64, Bitmap.Config.ARGB_8888);
         Canvas canva = new Canvas(icon);
@@ -49,14 +53,14 @@ public class NetSpeedNotification {
     }
 
     private static int getNtfIcon( int speed ) {
-        int icon = R.drawable.bkb000;
+        int icon = com.xander.netspeed.R.drawable.bkb000;
         if( speed < 1000 ) {
             icon = icon + speed;
         } else if( speed < 1000 * 10 )  {
-            icon = R.drawable.bmb010;
+            icon = com.xander.netspeed.R.drawable.bmb010;
             icon = icon + ( speed - 1000 ) / 100;
         } else if(speed < 1000 * 200) {
-            icon = R.drawable.bmb100;
+            icon = com.xander.netspeed.R.drawable.bmb100;
             icon = icon + ( speed - 10000 ) / 1000;
         }
         return icon;

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_frequency_fast"
+        android:title="@string/frequency_fast" />
+    <item
+        android:id="@+id/action_frequency_normal"
+        android:title="@string/frequency_normal" />
+    <item
+        android:id="@+id/action_frequency_low"
+        android:title="@string/frequency_low" />
+</menu>

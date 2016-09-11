@@ -1,4 +1,4 @@
-package com.xandy.netspeed;
+package com.xander.netspeed;
 
 import android.content.Context;
 import android.graphics.PixelFormat;
@@ -13,8 +13,8 @@ import android.widget.TextView;
 public class OverFlowWindows {
 	private static final String TAG = "OverFlowWindows";
 	
-    WindowManager mWManger;
-    LayoutParams mWManParams;
+    WindowManager windowManager;
+    LayoutParams windowsParams;
     public View mOverFlowView;
     public float mStateBarHeight = 20;
     
@@ -39,30 +39,28 @@ public class OverFlowWindows {
     }
     
     /**
-     * 初始化mWManger,mWManParams
+     * 初始化mWManger,windowsParams
      */
     private void initView() {
-    	mWManger = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
-//    	mWManger.
-    	mWManParams = new LayoutParams();
+    	windowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+    	windowsParams = new LayoutParams();
     	//设置LayoutParams的参数
     	//设置系统级窗口
-    	//mWManParams.type = LayoutParams.TYPE_PHONE ; 
-    	mWManParams.flags |= LayoutParams.FLAG_NOT_FOCUSABLE ;
-    	mWManParams.type = LayoutParams.TYPE_SYSTEM_ERROR ;
-    	mWManParams.flags |= LayoutParams.FLAG_FULLSCREEN |
-    			LayoutParams.FLAG_LAYOUT_IN_SCREEN  ;
+    	windowsParams.type = LayoutParams.TYPE_TOAST ;
+    	windowsParams.flags |= LayoutParams.FLAG_NOT_FOCUSABLE ;
+    	windowsParams.type = LayoutParams.TYPE_SYSTEM_ERROR ;
+    	windowsParams.flags |= LayoutParams.FLAG_FULLSCREEN | LayoutParams.FLAG_LAYOUT_IN_SCREEN  ;
     	//调整悬浮窗到左上角
-    	mWManParams.gravity = Gravity.TOP | Gravity.LEFT;
+    	windowsParams.gravity = Gravity.TOP | Gravity.LEFT;
     	//以屏幕左上角为源点，设置x，y
-    	mWManParams.x = 0;
-    	mWManParams.y = 0;
+    	windowsParams.x = 0;
+    	windowsParams.y = 0;
     	//悬浮窗的长宽数据
-    	mWManParams.width = LayoutParams.WRAP_CONTENT;
-    	mWManParams.height = LayoutParams.WRAP_CONTENT;
-    	mWManParams.format = PixelFormat.RGBA_8888;//透明
+    	windowsParams.width = LayoutParams.WRAP_CONTENT;
+    	windowsParams.height = LayoutParams.WRAP_CONTENT;
+    	windowsParams.format = PixelFormat.RGBA_8888;//透明
     	//加载悬浮窗布局文件
-    	mOverFlowView = LayoutInflater.from(mContext).inflate(R.layout.overflow, null);
+    	mOverFlowView = LayoutInflater.from(mContext).inflate(com.xander.netspeed.R.layout.overflow, null);
     	mOverFlowView.setOnTouchListener(new OnTouchListener() {
     		@Override
     		public boolean onTouch(View v, MotionEvent event) {
@@ -84,7 +82,7 @@ public class OverFlowWindows {
     			return true;
     		}
     	});
-    	mSpeed = (TextView) mOverFlowView.findViewById(R.id.tv_show);
+    	mSpeed = (TextView) mOverFlowView.findViewById(com.xander.netspeed.R.id.tv_show);
     }
     
     private void updateStateBarHeight() {
@@ -95,13 +93,13 @@ public class OverFlowWindows {
     }
     
     public void addToWindow() {
-    	mWManger.addView(mOverFlowView, mWManParams);
+    	windowManager.addView(mOverFlowView, windowsParams);
 		mHasAdd = true;
     }
 
 	public void removeFromWindow() {
 		if( mHasAdd ) {
-			mWManger.removeView(mOverFlowView);
+			windowManager.removeView(mOverFlowView);
 			mHasAdd = false;
 		}
 	}
@@ -121,8 +119,8 @@ public class OverFlowWindows {
      * 更新悬浮窗的位置
      */
     private void updatePosition() {
-        mWManParams.x = (int) ( rawX - mTouchStartX );
-        mWManParams.y = (int) ( rawY - mTouchStartY  );
-        mWManger.updateViewLayout(mOverFlowView, mWManParams);
+        windowsParams.x = (int) ( rawX - mTouchStartX );
+        windowsParams.y = (int) ( rawY - mTouchStartY  );
+        windowManager.updateViewLayout(mOverFlowView, windowsParams);
     }
 }
